@@ -1,9 +1,9 @@
 import { Container, Box, TextField, Typography, Link } from '@mui/material';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { auth,db } from '/firebase';
+import { auth, db } from '/firebase';
 import { useEffect, useState } from 'react'; // Import useState
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -55,45 +55,56 @@ const Register = () => {
   }, [user, error, navigate]);
 
   return (
-    <Container maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
+    <Container
+    maxWidth="sm"
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+    }}
+  >
+          <Box
+          sx={{
+          width: '100%',
+          maxWidth: '400px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
-        <Typography component="h1" variant="h6">
-          Register
-        </Typography>
-        <Box className="bg-gray-100 shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm opacity-90">
+          <Box className="bg-gray-100 shadow-md rounded px-10 pt-8 pb-10 mb-6 w-full opacity-90" sx={{ borderRadius: 12 }}>
+          <Typography component="h1" variant="h4" align="center" color="black" fontWeight="bold" mb={4}>
+            Register
+          </Typography>
           <form onSubmit={handleSubmit}>
-            <TextField margin="normal" fullWidth name="email" label="Email Address" className="mb-4" />
-            <TextField margin="normal" fullWidth name="password" label="Password" type="password" className="mb-4" />
-            <TextField margin="normal" fullWidth name="username" label="Username" className="mb-4" /> {/* Add input field for username */}
+            <TextField margin="normal" fullWidth name="email" label="Email Address" style={{ marginBottom: '16px' }} />
+            <TextField margin="normal" fullWidth name="password" label="Password" type="password" style={{ marginBottom: '16px' }} />
+            <TextField margin="normal" fullWidth name="username" label="Username" style={{ marginBottom: '16px' }} /> {/* Add input field for username */}
             <button
               type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline mt-6 mb-4"
+              style={{ fontSize: '1.2rem' }}
             >
               Register
             </button>
           </form>
           {/* Display error message if exists */}
           {errorMessage && (
-            <Typography variant="body2" align="center" mt={2} sx={{ color: 'red' }}>
+            <Typography variant="body2" align="center" style={{ color: 'red', marginBottom: '16px' }}>
               {errorMessage}
             </Typography>
           )}
-          <Typography variant="body2" align="center" mt={2} sx={{ color: 'black' }}>
+          <Typography  variant="body2" align="center" sx={{color: 'black', fontSize: '1rem'}}>
             Already have an account?{' '}
             <Link component={RouterLink} to="/login" underline="always">
               Login
             </Link>
           </Typography>
         </Box>
-      </Box>
+        </Box>
+     
     </Container>
   );
 };

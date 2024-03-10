@@ -8,12 +8,13 @@
 }
 
 body {
-  background: #5F4B8BFF;
+  background: #D3B8DFFF; /* Pastel purple color */
   color: #FFFFFF;
   max-width: 500px;
   padding: 1rem;
   margin: 0 auto;
 }
+
 
 .new-item-form {
   display: flex;

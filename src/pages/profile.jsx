@@ -4,6 +4,7 @@ import { auth, sg, db } from "/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 import CheckIcon from '@mui/icons-material/Check';
+import EditIcon from '@mui/icons-material/Edit';
 import ClearIcon from '@mui/icons-material/Clear';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
@@ -20,7 +21,7 @@ const Profile = () => {
       if (user) {
         setUser(user);
         fetchProfilePic(user.uid);
-        await fetchUsername(user.uid); // Call fetchUsername directly with user.uid
+        await fetchUsername(user.uid);
       } else {
         setUser(null);
         setProfilePic(null);
@@ -40,7 +41,7 @@ const Profile = () => {
     }
   };
 
-  const fetchUsername = async (userId) => { // Modify fetchUsername to accept userId parameter
+  const fetchUsername = async (userId) => {
     try {
       const q = query(
         collection(db, 'users'),
@@ -74,12 +75,12 @@ const Profile = () => {
 
   const handleEdit = () => {
     setIsEditing(true);
-    setTempUsername(username); // Set tempUsername to current username when editing starts
+    setTempUsername(username);
   };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
-    setTempUsername(username); // Reset tempUsername to current username when editing is canceled
+    setTempUsername(username);
   };
 
   const handleSaveEdit = async () => {
@@ -107,18 +108,24 @@ const Profile = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8">
-      <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8">
+      <div className="bg-white rounded-lg shadow-lg p-8">
         <h1 className="text-2xl font-bold mb-4 text-black">User Profile</h1>
         <Link to="/homepage" className="text-blue-500 mb-4">
           <ArrowBackIcon />
         </Link>
         {user && (
           <div className="flex flex-col items-center">
-            <p className="mb-4 text-black">Email: {user.email}</p>
+            {profilePic && (
+              <img
+                src={profilePic}
+                alt="Profile"
+                className="w-32 h-32 rounded-full mb-4"
+              />
+            )}
             <div className="mb-4">
               {isEditing ? (
-                <>
+                <div className="flex items-center">
                   <input
                     type="text"
                     value={tempUsername}
@@ -127,25 +134,35 @@ const Profile = () => {
                   />
                   <CheckIcon onClick={handleSaveEdit} className="cursor-pointer text-green-500 ml-2" />
                   <ClearIcon onClick={handleCancelEdit} className="cursor-pointer text-red-500 ml-2" />
-                </>
+                </div>
               ) : (
-                <>
-                  <span className="text-black">Username: {username}</span>
-                  <button onClick={handleEdit} className="text-blue-500 ml-2">Edit</button>
-                </>
+                <div className="flex items-center">
+                  <span className="text-black">{username}</span>
+                  <EditIcon onClick={handleEdit} className="cursor-pointer text-blue-500 ml-2" />
+                </div>
               )}
             </div>
-            {profilePic && (
-              <img
-                src={profilePic}
-                alt="Profile"
-                className="w-32 h-32 rounded-full mb-4"
-              />
-            )}
             <div>
-              <label htmlFor="profile-pic" className="cursor-pointer bg-blue-500 text-white py-2 px-4 rounded-lg">
-                Change Picture
-              </label>
+              {selectedFile ? (
+                <div className="flex">
+                  <button
+                    onClick={handleUpload}
+                    className="bg-blue-400 text-white py-2 px-4 rounded-lg"
+                  >
+                    Upload
+                  </button>
+                  <button
+                    onClick={() => setSelectedFile(null)}
+                    className="bg-red-400 text-white py-2 px-4 rounded-lg ml-2"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <label htmlFor="profile-pic" className="cursor-pointer bg-blue-200 text-black py-2 px-4 rounded-lg">
+                  Change Picture
+                </label>
+              )}
               <input
                 type="file"
                 id="profile-pic"
@@ -153,14 +170,6 @@ const Profile = () => {
                 onChange={handleFileChange}
                 className="hidden"
               />
-              {selectedFile && (
-                <button
-                  onClick={handleUpload}
-                  className="bg-green-500 text-white py-2 px-4 rounded-lg mt-2"
-                >
-                  Upload
-                </button>
-              )}
             </div>
           </div>
         )}

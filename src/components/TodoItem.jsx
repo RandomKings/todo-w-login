@@ -12,9 +12,9 @@ export function TodoItem({ completed, id, title }) {
     try {
       await updateDoc(todoDocRef, {
         title: editedTitle,
-        completed: isChecked, // Update completed status
+        completed: isChecked,
       });
-      setIsEditing(false); // Turn off editing mode after update
+      setIsEditing(false);
     } catch (err) {
       alert(err);
     }
@@ -31,11 +31,11 @@ export function TodoItem({ completed, id, title }) {
 
   const handleCheckedChange = async (e) => {
     const isChecked = e.target.checked;
-    setIsChecked(isChecked); // Update local state
+    setIsChecked(isChecked);
     const todoDocRef = doc(db, "tasks", id);
     try {
       await updateDoc(todoDocRef, {
-        completed: isChecked, // Update completed status in the database
+        completed: isChecked,
       });
     } catch (err) {
       alert(err);
@@ -45,7 +45,6 @@ export function TodoItem({ completed, id, title }) {
   let todoContent;
 
   if (isEditing) {
-    // Render edit mode
     todoContent = (
       <>
         <input
@@ -54,7 +53,7 @@ export function TodoItem({ completed, id, title }) {
           onChange={(e) => setEditedTitle(e.target.value)}
         />
         <button
-          className="flex-none focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900"
+          className="flex-none focus:outline-none text-white bg-pink-300 hover:bg-pink-400 focus:ring-4 focus:ring-pink-200 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-pink-400 dark:hover:bg-pink-500 dark:focus:ring-pink-900"
           onClick={handleUpdate}
           disabled={editedTitle.length === 0}
         >
@@ -63,13 +62,12 @@ export function TodoItem({ completed, id, title }) {
       </>
     );
   } else {
-    // Render view mode
     todoContent = (
       <>
         <div className="grow">{title}</div>
         <button
-          className="flex-none focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900"
-          onClick={() => setIsEditing(true)} // Set isEditing to true on click
+          className="flex-none focus:outline-none text-white bg-blue-300 hover:bg-blue-400 focus:ring-4 focus:ring-blue-200 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-500 dark:focus:ring-blue-900"
+          onClick={() => setIsEditing(true)}
         >
           Edit
         </button>
@@ -78,19 +76,18 @@ export function TodoItem({ completed, id, title }) {
   }
 
   return (
-    <li>
+    <li className="py-2">
       <label className="flex w-full">
         <input
-          id={`checkbox-${id}`} // Unique id for each checkbox
-          className="checkbox-custom" // Custom styling for the checkbox
-          name="checkbox"
+          id={`checkbox-${id}`}
+          className="form-checkbox h-5 w-5 text-blue-500 border-gray-300 rounded focus:ring-blue-400"
           checked={isChecked}
-          onChange={handleCheckedChange} // Call handleCheckedChange on change
+          onChange={handleCheckedChange}
           type="checkbox"
         />
         {todoContent}
         <button
-          className="flex-none p-1.5 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+          className="flex-none p-1.5 focus:outline-none text-white bg-red-300 hover:bg-red-400 focus:ring-4 focus:ring-red-200 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-400 dark:hover:bg-red-500 dark:focus:ring-red-900"
           onClick={handleDelete}
         >
           Delete

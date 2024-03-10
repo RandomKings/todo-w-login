@@ -4,6 +4,7 @@ import { TodoList } from "../components/TodoList";
 import { db } from "/firebase";
 import { collection, query, where, orderBy, getDocs, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeftIcon } from '@heroicons/react/solid';
 
 function Todo() {
   const [todos, setTodos] = useState([]);
@@ -11,8 +12,6 @@ function Todo() {
   const navigate = useNavigate();
 
   async function filterTodos() {
-    console.log("Current filter:", filter); // Log the current filter value
-
     let q;
 
     switch (filter) {
@@ -36,14 +35,12 @@ function Todo() {
     }
 
     const querySnapshot = await getDocs(q);
-    console.log("Query snapshot:", querySnapshot.docs); // Log the retrieved documents
-
     const filteredTasks = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       data: doc.data(),
     }));
 
-    setTodos(filteredTasks); // Update todos state here
+    setTodos(filteredTasks);
   }
 
   useEffect(() => {
@@ -89,51 +86,33 @@ function Todo() {
   }
 
   return (
-    <>
+    <div className="container mx-auto mt-0 p-4 bg-white rounded-lg shadow-lg text-black"> {/* Removed top margin */}
       <button
         onClick={handleHomePage}
-        className="flex-none p-1.5 focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900"
-      >
-        Back to Homepage
+        className="flex-none p-2 mr-2 focus:outline-none text-blue-500 hover:text-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm"
+      > {/* Added right margin */}
+        <ArrowLeftIcon className="w-5 h-5 mr-1" />
       </button>
-      <div>
+      <div className="mt-4 text-center">
+        <h1 style={{ fontWeight: 'bold', fontSize: '2rem' }}>Todo List</h1>
+      </div>
+      <div className="mt-4">
         <TodoForm addTodo={addTodo} />
       </div>
-      <div className="space-x-2 mt-4">
-        <button
-          className={`px-4 py-2 rounded ${
-            filter === "all" ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-700"
-          }`}
-          onClick={() => setFilter("all")}
-        >
-          All
-        </button>
-        <button
-          className={`px-4 py-2 rounded ${
-            filter === "completed" ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-700"
-          }`}
-          onClick={() => setFilter("completed")}
-        >
-          Completed
-        </button>
-        <button
-          className={`px-4 py-2 rounded ${
-            filter === "ongoing" ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-700"
-          }`}
-          onClick={() => setFilter("ongoing")}
-        >
-          Ongoing
-        </button>
+      <div className="flex justify-center">
+        <div className="w-full max-w-lg text-lg"> {/* Increased font size */}
+          <TodoList
+            tasks={todos}
+            filter={filter}
+            toggleTodo={toggleTodo}
+            deleteTodo={deleteTodo}
+            editTodo={editTodo}
+          />
+        </div>
       </div>
-      <TodoList
-        tasks={todos}
-        filter={filter}
-        toggleTodo={toggleTodo}
-        deleteTodo={deleteTodo}
-        editTodo={editTodo}
-      />
-    </>
+    </div>
   );
+  
 }
 
 export default Todo;

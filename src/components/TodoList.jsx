@@ -56,7 +56,6 @@ export function TodoList({ toggleTodo, deleteTodo, editTodo, filter }) {
 
   return (
     <div>
-      <h1 className="header">Todo List</h1>
       <ul className="list">
         {filteredTasks.length === 0 && "No todos"}
         {filteredTasks.map(todo => (
