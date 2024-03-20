@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { TodoForm } from "../components/TodoForm";
 import { TodoList } from "../components/TodoList";
@@ -86,11 +87,11 @@ function Todo() {
   }
 
   return (
-    <div className="container mx-auto mt-0 p-4 bg-white rounded-lg shadow-lg text-black"> {/* Removed top margin */}
+    <div className="container mx-auto mt-0 p-4 bg-white rounded-lg shadow-lg text-black">
       <button
         onClick={handleHomePage}
         className="flex-none p-2 mr-2 focus:outline-none text-blue-500 hover:text-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm"
-      > {/* Added right margin */}
+      >
         <ArrowLeftIcon className="w-5 h-5 mr-1" />
       </button>
       <div className="mt-4 text-center">
@@ -99,8 +100,28 @@ function Todo() {
       <div className="mt-4">
         <TodoForm addTodo={addTodo} />
       </div>
+      <div className="flex justify-center mt-4">
+        <button
+          className={`mx-2 px-4 py-2 rounded-lg ${filter === "all" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}
+          onClick={() => setFilter("all")}
+        >
+          All
+        </button>
+        <button
+          className={`mx-2 px-4 py-2 rounded-lg ${filter === "completed" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}
+          onClick={() => setFilter("completed")}
+        >
+          Completed
+        </button>
+        <button
+          className={`mx-2 px-4 py-2 rounded-lg ${filter === "ongoing" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}
+          onClick={() => setFilter("ongoing")}
+        >
+          Ongoing
+        </button>
+      </div>
       <div className="flex justify-center">
-        <div className="w-full max-w-lg text-lg"> {/* Increased font size */}
+        <div className="w-full max-w-lg text-lg">
           <TodoList
             tasks={todos}
             filter={filter}
@@ -112,7 +133,6 @@ function Todo() {
       </div>
     </div>
   );
-  
 }
 
 export default Todo;
